@@ -1,0 +1,339 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> declaration
+Rule 1     declaration -> ID LARROW C LPAREN list RPAREN
+Rule 2     declaration -> ID LARROW NUMBER COLON NUMBER
+Rule 3     declaration -> ID LARROW SEQ LPAREN NUMBER COMMA NUMBER COMMA BY EQUAL NUMBER RPAREN
+Rule 4     declaration -> ID LARROW SEQ LPAREN NUMBER COMMA NUMBER COMMA LEN EQUAL NUMBER RPAREN
+Rule 5     list -> NUMBER
+Rule 6     list -> STRING
+Rule 7     list -> BOOLEAN_MISSING
+Rule 8     list -> NUMBER COMMA list
+Rule 9     list -> STRING COMMA list
+Rule 10    list -> BOOLEAN_MISSING COMMA list
+
+Terminals, with rules where they appear
+
+BOOLEAN_MISSING      : 7 10
+BY                   : 3
+C                    : 1
+COLON                : 2
+COMMA                : 3 3 4 4 8 9 10
+EQUAL                : 3 4
+ID                   : 1 2 3 4
+LARROW               : 1 2 3 4
+LEN                  : 4
+LPAREN               : 1 3 4
+NUMBER               : 2 2 3 3 3 4 4 4 5 8
+RPAREN               : 1 3 4
+SEQ                  : 3 4
+STRING               : 6 9
+error                : 
+
+Nonterminals, with rules where they appear
+
+declaration          : 0
+list                 : 1 8 9 10
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . declaration
+    (1) declaration -> . ID LARROW C LPAREN list RPAREN
+    (2) declaration -> . ID LARROW NUMBER COLON NUMBER
+    (3) declaration -> . ID LARROW SEQ LPAREN NUMBER COMMA NUMBER COMMA BY EQUAL NUMBER RPAREN
+    (4) declaration -> . ID LARROW SEQ LPAREN NUMBER COMMA NUMBER COMMA LEN EQUAL NUMBER RPAREN
+
+    ID              shift and go to state 2
+
+    declaration                    shift and go to state 1
+
+state 1
+
+    (0) S' -> declaration .
+
+
+
+state 2
+
+    (1) declaration -> ID . LARROW C LPAREN list RPAREN
+    (2) declaration -> ID . LARROW NUMBER COLON NUMBER
+    (3) declaration -> ID . LARROW SEQ LPAREN NUMBER COMMA NUMBER COMMA BY EQUAL NUMBER RPAREN
+    (4) declaration -> ID . LARROW SEQ LPAREN NUMBER COMMA NUMBER COMMA LEN EQUAL NUMBER RPAREN
+
+    LARROW          shift and go to state 3
+
+
+state 3
+
+    (1) declaration -> ID LARROW . C LPAREN list RPAREN
+    (2) declaration -> ID LARROW . NUMBER COLON NUMBER
+    (3) declaration -> ID LARROW . SEQ LPAREN NUMBER COMMA NUMBER COMMA BY EQUAL NUMBER RPAREN
+    (4) declaration -> ID LARROW . SEQ LPAREN NUMBER COMMA NUMBER COMMA LEN EQUAL NUMBER RPAREN
+
+    C               shift and go to state 4
+    NUMBER          shift and go to state 5
+    SEQ             shift and go to state 6
+
+
+state 4
+
+    (1) declaration -> ID LARROW C . LPAREN list RPAREN
+
+    LPAREN          shift and go to state 7
+
+
+state 5
+
+    (2) declaration -> ID LARROW NUMBER . COLON NUMBER
+
+    COLON           shift and go to state 8
+
+
+state 6
+
+    (3) declaration -> ID LARROW SEQ . LPAREN NUMBER COMMA NUMBER COMMA BY EQUAL NUMBER RPAREN
+    (4) declaration -> ID LARROW SEQ . LPAREN NUMBER COMMA NUMBER COMMA LEN EQUAL NUMBER RPAREN
+
+    LPAREN          shift and go to state 9
+
+
+state 7
+
+    (1) declaration -> ID LARROW C LPAREN . list RPAREN
+    (5) list -> . NUMBER
+    (6) list -> . STRING
+    (7) list -> . BOOLEAN_MISSING
+    (8) list -> . NUMBER COMMA list
+    (9) list -> . STRING COMMA list
+    (10) list -> . BOOLEAN_MISSING COMMA list
+
+    NUMBER          shift and go to state 11
+    STRING          shift and go to state 12
+    BOOLEAN_MISSING shift and go to state 13
+
+    list                           shift and go to state 10
+
+state 8
+
+    (2) declaration -> ID LARROW NUMBER COLON . NUMBER
+
+    NUMBER          shift and go to state 14
+
+
+state 9
+
+    (3) declaration -> ID LARROW SEQ LPAREN . NUMBER COMMA NUMBER COMMA BY EQUAL NUMBER RPAREN
+    (4) declaration -> ID LARROW SEQ LPAREN . NUMBER COMMA NUMBER COMMA LEN EQUAL NUMBER RPAREN
+
+    NUMBER          shift and go to state 15
+
+
+state 10
+
+    (1) declaration -> ID LARROW C LPAREN list . RPAREN
+
+    RPAREN          shift and go to state 16
+
+
+state 11
+
+    (5) list -> NUMBER .
+    (8) list -> NUMBER . COMMA list
+
+    RPAREN          reduce using rule 5 (list -> NUMBER .)
+    COMMA           shift and go to state 17
+
+
+state 12
+
+    (6) list -> STRING .
+    (9) list -> STRING . COMMA list
+
+    RPAREN          reduce using rule 6 (list -> STRING .)
+    COMMA           shift and go to state 18
+
+
+state 13
+
+    (7) list -> BOOLEAN_MISSING .
+    (10) list -> BOOLEAN_MISSING . COMMA list
+
+    RPAREN          reduce using rule 7 (list -> BOOLEAN_MISSING .)
+    COMMA           shift and go to state 19
+
+
+state 14
+
+    (2) declaration -> ID LARROW NUMBER COLON NUMBER .
+
+    $end            reduce using rule 2 (declaration -> ID LARROW NUMBER COLON NUMBER .)
+
+
+state 15
+
+    (3) declaration -> ID LARROW SEQ LPAREN NUMBER . COMMA NUMBER COMMA BY EQUAL NUMBER RPAREN
+    (4) declaration -> ID LARROW SEQ LPAREN NUMBER . COMMA NUMBER COMMA LEN EQUAL NUMBER RPAREN
+
+    COMMA           shift and go to state 20
+
+
+state 16
+
+    (1) declaration -> ID LARROW C LPAREN list RPAREN .
+
+    $end            reduce using rule 1 (declaration -> ID LARROW C LPAREN list RPAREN .)
+
+
+state 17
+
+    (8) list -> NUMBER COMMA . list
+    (5) list -> . NUMBER
+    (6) list -> . STRING
+    (7) list -> . BOOLEAN_MISSING
+    (8) list -> . NUMBER COMMA list
+    (9) list -> . STRING COMMA list
+    (10) list -> . BOOLEAN_MISSING COMMA list
+
+    NUMBER          shift and go to state 11
+    STRING          shift and go to state 12
+    BOOLEAN_MISSING shift and go to state 13
+
+    list                           shift and go to state 21
+
+state 18
+
+    (9) list -> STRING COMMA . list
+    (5) list -> . NUMBER
+    (6) list -> . STRING
+    (7) list -> . BOOLEAN_MISSING
+    (8) list -> . NUMBER COMMA list
+    (9) list -> . STRING COMMA list
+    (10) list -> . BOOLEAN_MISSING COMMA list
+
+    NUMBER          shift and go to state 11
+    STRING          shift and go to state 12
+    BOOLEAN_MISSING shift and go to state 13
+
+    list                           shift and go to state 22
+
+state 19
+
+    (10) list -> BOOLEAN_MISSING COMMA . list
+    (5) list -> . NUMBER
+    (6) list -> . STRING
+    (7) list -> . BOOLEAN_MISSING
+    (8) list -> . NUMBER COMMA list
+    (9) list -> . STRING COMMA list
+    (10) list -> . BOOLEAN_MISSING COMMA list
+
+    NUMBER          shift and go to state 11
+    STRING          shift and go to state 12
+    BOOLEAN_MISSING shift and go to state 13
+
+    list                           shift and go to state 23
+
+state 20
+
+    (3) declaration -> ID LARROW SEQ LPAREN NUMBER COMMA . NUMBER COMMA BY EQUAL NUMBER RPAREN
+    (4) declaration -> ID LARROW SEQ LPAREN NUMBER COMMA . NUMBER COMMA LEN EQUAL NUMBER RPAREN
+
+    NUMBER          shift and go to state 24
+
+
+state 21
+
+    (8) list -> NUMBER COMMA list .
+
+    RPAREN          reduce using rule 8 (list -> NUMBER COMMA list .)
+
+
+state 22
+
+    (9) list -> STRING COMMA list .
+
+    RPAREN          reduce using rule 9 (list -> STRING COMMA list .)
+
+
+state 23
+
+    (10) list -> BOOLEAN_MISSING COMMA list .
+
+    RPAREN          reduce using rule 10 (list -> BOOLEAN_MISSING COMMA list .)
+
+
+state 24
+
+    (3) declaration -> ID LARROW SEQ LPAREN NUMBER COMMA NUMBER . COMMA BY EQUAL NUMBER RPAREN
+    (4) declaration -> ID LARROW SEQ LPAREN NUMBER COMMA NUMBER . COMMA LEN EQUAL NUMBER RPAREN
+
+    COMMA           shift and go to state 25
+
+
+state 25
+
+    (3) declaration -> ID LARROW SEQ LPAREN NUMBER COMMA NUMBER COMMA . BY EQUAL NUMBER RPAREN
+    (4) declaration -> ID LARROW SEQ LPAREN NUMBER COMMA NUMBER COMMA . LEN EQUAL NUMBER RPAREN
+
+    BY              shift and go to state 26
+    LEN             shift and go to state 27
+
+
+state 26
+
+    (3) declaration -> ID LARROW SEQ LPAREN NUMBER COMMA NUMBER COMMA BY . EQUAL NUMBER RPAREN
+
+    EQUAL           shift and go to state 28
+
+
+state 27
+
+    (4) declaration -> ID LARROW SEQ LPAREN NUMBER COMMA NUMBER COMMA LEN . EQUAL NUMBER RPAREN
+
+    EQUAL           shift and go to state 29
+
+
+state 28
+
+    (3) declaration -> ID LARROW SEQ LPAREN NUMBER COMMA NUMBER COMMA BY EQUAL . NUMBER RPAREN
+
+    NUMBER          shift and go to state 30
+
+
+state 29
+
+    (4) declaration -> ID LARROW SEQ LPAREN NUMBER COMMA NUMBER COMMA LEN EQUAL . NUMBER RPAREN
+
+    NUMBER          shift and go to state 31
+
+
+state 30
+
+    (3) declaration -> ID LARROW SEQ LPAREN NUMBER COMMA NUMBER COMMA BY EQUAL NUMBER . RPAREN
+
+    RPAREN          shift and go to state 32
+
+
+state 31
+
+    (4) declaration -> ID LARROW SEQ LPAREN NUMBER COMMA NUMBER COMMA LEN EQUAL NUMBER . RPAREN
+
+    RPAREN          shift and go to state 33
+
+
+state 32
+
+    (3) declaration -> ID LARROW SEQ LPAREN NUMBER COMMA NUMBER COMMA BY EQUAL NUMBER RPAREN .
+
+    $end            reduce using rule 3 (declaration -> ID LARROW SEQ LPAREN NUMBER COMMA NUMBER COMMA BY EQUAL NUMBER RPAREN .)
+
+
+state 33
+
+    (4) declaration -> ID LARROW SEQ LPAREN NUMBER COMMA NUMBER COMMA LEN EQUAL NUMBER RPAREN .
+
+    $end            reduce using rule 4 (declaration -> ID LARROW SEQ LPAREN NUMBER COMMA NUMBER COMMA LEN EQUAL NUMBER RPAREN .)
+
