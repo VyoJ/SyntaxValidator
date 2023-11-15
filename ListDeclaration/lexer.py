@@ -1,29 +1,17 @@
 import ply.lex as lex
 
-tokens = ('ID', 'LARROW', 'NUMBER', 'STRING', 'C', 'SEQ', 'LPAREN', 'RPAREN', 'COMMA', 'COLON', 'BY', 'EQUAL', 'LEN', 'BOOLEAN_MISSING')
+tokens = ('ID', 'LARROW', 'LIST', 'NUM', 'STRING', 'C', 'LPAREN', 'RPAREN', 'COMMA', 'BOOLEAN_MISSING')
 
 def t_C(t):
     r'c'
-    return t
-
-def t_SEQ(t):
-    r'seq'
-    return t
-
-def t_BY(t):
-    r'by'
-    return t
-
-def t_LEN(t):
-    r'length.out'
     return t
 
 def t_BOOLEAN_MISSING(t):
     r'TRUE | FALSE | NA'
     return t
 
-def t_MATRIX(t):
-    r'matrix'
+def t_LIST(t):
+    r'list'
     return t
 
 def t_ID(t):
@@ -31,13 +19,11 @@ def t_ID(t):
     return t
 
 t_LARROW = r'<-'
-t_NUMBER = r'\d+'
+t_NUM = r'\d+'
 t_STRING = r'"[^"]*"'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_COMMA = r','
-t_COLON = r':'
-t_EQUAL = r'='
 
 t_ignore = ' \t\n'
 

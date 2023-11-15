@@ -1,0 +1,266 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> declaration
+Rule 1     declaration -> ID LARROW LIST LPAREN values RPAREN
+Rule 2     values -> types COMMA values
+Rule 3     values -> types
+Rule 4     types -> ID
+Rule 5     types -> C LPAREN values RPAREN
+Rule 6     types -> STRING
+Rule 7     types -> NUM
+Rule 8     types -> BOOLEAN_MISSING
+Rule 9     types -> LIST LPAREN values RPAREN
+
+Terminals, with rules where they appear
+
+BOOLEAN_MISSING      : 8
+C                    : 5
+COMMA                : 2
+ID                   : 1 4
+LARROW               : 1
+LIST                 : 1 9
+LPAREN               : 1 5 9
+NUM                  : 7
+RPAREN               : 1 5 9
+STRING               : 6
+error                : 
+
+Nonterminals, with rules where they appear
+
+declaration          : 0
+types                : 2 3
+values               : 1 2 5 9
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . declaration
+    (1) declaration -> . ID LARROW LIST LPAREN values RPAREN
+
+    ID              shift and go to state 2
+
+    declaration                    shift and go to state 1
+
+state 1
+
+    (0) S' -> declaration .
+
+
+
+state 2
+
+    (1) declaration -> ID . LARROW LIST LPAREN values RPAREN
+
+    LARROW          shift and go to state 3
+
+
+state 3
+
+    (1) declaration -> ID LARROW . LIST LPAREN values RPAREN
+
+    LIST            shift and go to state 4
+
+
+state 4
+
+    (1) declaration -> ID LARROW LIST . LPAREN values RPAREN
+
+    LPAREN          shift and go to state 5
+
+
+state 5
+
+    (1) declaration -> ID LARROW LIST LPAREN . values RPAREN
+    (2) values -> . types COMMA values
+    (3) values -> . types
+    (4) types -> . ID
+    (5) types -> . C LPAREN values RPAREN
+    (6) types -> . STRING
+    (7) types -> . NUM
+    (8) types -> . BOOLEAN_MISSING
+    (9) types -> . LIST LPAREN values RPAREN
+
+    ID              shift and go to state 6
+    C               shift and go to state 10
+    STRING          shift and go to state 11
+    NUM             shift and go to state 12
+    BOOLEAN_MISSING shift and go to state 13
+    LIST            shift and go to state 7
+
+    values                         shift and go to state 8
+    types                          shift and go to state 9
+
+state 6
+
+    (4) types -> ID .
+
+    COMMA           reduce using rule 4 (types -> ID .)
+    RPAREN          reduce using rule 4 (types -> ID .)
+
+
+state 7
+
+    (9) types -> LIST . LPAREN values RPAREN
+
+    LPAREN          shift and go to state 14
+
+
+state 8
+
+    (1) declaration -> ID LARROW LIST LPAREN values . RPAREN
+
+    RPAREN          shift and go to state 15
+
+
+state 9
+
+    (2) values -> types . COMMA values
+    (3) values -> types .
+
+    COMMA           shift and go to state 16
+    RPAREN          reduce using rule 3 (values -> types .)
+
+
+state 10
+
+    (5) types -> C . LPAREN values RPAREN
+
+    LPAREN          shift and go to state 17
+
+
+state 11
+
+    (6) types -> STRING .
+
+    COMMA           reduce using rule 6 (types -> STRING .)
+    RPAREN          reduce using rule 6 (types -> STRING .)
+
+
+state 12
+
+    (7) types -> NUM .
+
+    COMMA           reduce using rule 7 (types -> NUM .)
+    RPAREN          reduce using rule 7 (types -> NUM .)
+
+
+state 13
+
+    (8) types -> BOOLEAN_MISSING .
+
+    COMMA           reduce using rule 8 (types -> BOOLEAN_MISSING .)
+    RPAREN          reduce using rule 8 (types -> BOOLEAN_MISSING .)
+
+
+state 14
+
+    (9) types -> LIST LPAREN . values RPAREN
+    (2) values -> . types COMMA values
+    (3) values -> . types
+    (4) types -> . ID
+    (5) types -> . C LPAREN values RPAREN
+    (6) types -> . STRING
+    (7) types -> . NUM
+    (8) types -> . BOOLEAN_MISSING
+    (9) types -> . LIST LPAREN values RPAREN
+
+    ID              shift and go to state 6
+    C               shift and go to state 10
+    STRING          shift and go to state 11
+    NUM             shift and go to state 12
+    BOOLEAN_MISSING shift and go to state 13
+    LIST            shift and go to state 7
+
+    values                         shift and go to state 18
+    types                          shift and go to state 9
+
+state 15
+
+    (1) declaration -> ID LARROW LIST LPAREN values RPAREN .
+
+    $end            reduce using rule 1 (declaration -> ID LARROW LIST LPAREN values RPAREN .)
+
+
+state 16
+
+    (2) values -> types COMMA . values
+    (2) values -> . types COMMA values
+    (3) values -> . types
+    (4) types -> . ID
+    (5) types -> . C LPAREN values RPAREN
+    (6) types -> . STRING
+    (7) types -> . NUM
+    (8) types -> . BOOLEAN_MISSING
+    (9) types -> . LIST LPAREN values RPAREN
+
+    ID              shift and go to state 6
+    C               shift and go to state 10
+    STRING          shift and go to state 11
+    NUM             shift and go to state 12
+    BOOLEAN_MISSING shift and go to state 13
+    LIST            shift and go to state 7
+
+    types                          shift and go to state 9
+    values                         shift and go to state 19
+
+state 17
+
+    (5) types -> C LPAREN . values RPAREN
+    (2) values -> . types COMMA values
+    (3) values -> . types
+    (4) types -> . ID
+    (5) types -> . C LPAREN values RPAREN
+    (6) types -> . STRING
+    (7) types -> . NUM
+    (8) types -> . BOOLEAN_MISSING
+    (9) types -> . LIST LPAREN values RPAREN
+
+    ID              shift and go to state 6
+    C               shift and go to state 10
+    STRING          shift and go to state 11
+    NUM             shift and go to state 12
+    BOOLEAN_MISSING shift and go to state 13
+    LIST            shift and go to state 7
+
+    values                         shift and go to state 20
+    types                          shift and go to state 9
+
+state 18
+
+    (9) types -> LIST LPAREN values . RPAREN
+
+    RPAREN          shift and go to state 21
+
+
+state 19
+
+    (2) values -> types COMMA values .
+
+    RPAREN          reduce using rule 2 (values -> types COMMA values .)
+
+
+state 20
+
+    (5) types -> C LPAREN values . RPAREN
+
+    RPAREN          shift and go to state 22
+
+
+state 21
+
+    (9) types -> LIST LPAREN values RPAREN .
+
+    COMMA           reduce using rule 9 (types -> LIST LPAREN values RPAREN .)
+    RPAREN          reduce using rule 9 (types -> LIST LPAREN values RPAREN .)
+
+
+state 22
+
+    (5) types -> C LPAREN values RPAREN .
+
+    COMMA           reduce using rule 5 (types -> C LPAREN values RPAREN .)
+    RPAREN          reduce using rule 5 (types -> C LPAREN values RPAREN .)
+
