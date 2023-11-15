@@ -1,11 +1,18 @@
 import ply.lex as lex
 import ply.yacc as yacc
 
-#Lex file
+# R function declaration Syntax:
+# var <- function ( arglist ) { body }
+# Have not defined all cases to check for function body as that could be any valid R statement
+# Instead, have hardcoded it to accept only variable declarations for now
+
+# Lex file
 tokens = ('ID', 'LARROW', 'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'FUNC', 'COMMA', 'NUMBER', 'STRING')
 
+# To indicate/flag if an error occured
 err = 0
 
+# To detect function keyword as a token
 def t_FUNC(t):
     r'function'
     return t
@@ -25,6 +32,7 @@ t_STRING = r'"[^"]*"'
 
 t_ignore = ' \t'
 
+# To handle lexing errors when illegal characters are detected
 def t_error(t):
     print(f"Syntax Error: Illegal character found '{t.value[0]}'")
     global err
@@ -33,7 +41,8 @@ def t_error(t):
 
 lexer = lex.lex()
 
-#Yacc file
+# Yacc file:
+
 def p_declaration(p):
     '''
     declaration : ID LARROW FUNC LPAREN args RPAREN LBRACE statement RBRACE
@@ -63,11 +72,13 @@ def p_var_declare(p):
                 | ID LARROW NUMBER
     '''
 
+# Non terminal to derive an empty terminal or lambda
 def p_empty(p):
     '''
     empty   :
     '''
 
+# To handle syntax errors encountered while parsing
 def p_error(p):
     print("Syntax error")
     global err
@@ -92,5 +103,7 @@ while True:
 
     result = parser.parse(s)
 
+    # If there are no syntax errors, print valid syntax
     if err == 0:
         print("Valid syntax")
+

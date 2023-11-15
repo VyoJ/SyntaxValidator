@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'COMMA EQUAL ID LARROW LPAREN NUM RPAREN STRING SWITCH\n    switch  : ID LARROW SWITCH LPAREN expr COMMA cases RPAREN\n            | ID EQUAL SWITCH LPAREN expr COMMA cases RPAREN\n    \n    cases   : STRING COMMA cases\n            | STRING EQUAL STRING COMMA cases \n            | STRING EQUAL STRING\n            | STRING\n    \n    expr    : NUM   \n            | ID\n            \n    '
+_lr_signature = 'COMMA EQUAL ID LARROW LPAREN NUM RPAREN STRING SWITCH\n    switch  : ID LARROW SWITCH LPAREN expr COMMA cases RPAREN\n            | ID EQUAL SWITCH LPAREN expr COMMA cases RPAREN\n            | SWITCH LPAREN expr COMMA cases RPAREN\n    \n    cases   : STRING COMMA cases\n            | casevalue EQUAL STRING COMMA cases \n            | casevalue EQUAL STRING\n            | STRING\n    \n    casevalue   : STRING\n                | ID\n    \n    expr    : NUM   \n            | ID\n            \n    '
     
-_lr_action_items = {'ID':([0,7,8,],[2,9,9,]),'$end':([1,18,21,],[0,-1,-2,]),'LARROW':([2,],[3,]),'EQUAL':([2,16,],[4,20,]),'SWITCH':([3,4,],[5,6,]),'LPAREN':([5,6,],[7,8,]),'NUM':([7,8,],[11,11,]),'COMMA':([9,10,11,12,16,23,],[-8,13,-7,14,19,24,]),'STRING':([13,14,19,20,24,],[16,16,16,23,16,]),'RPAREN':([15,16,17,22,23,25,],[18,-6,21,-3,-5,-4,]),}
+_lr_action_items = {'ID':([0,6,12,13,14,21,22,24,32,],[2,11,11,11,20,20,20,20,20,]),'SWITCH':([0,4,5,],[3,7,8,]),'$end':([1,23,30,31,],[0,-3,-1,-2,]),'LARROW':([2,],[4,]),'EQUAL':([2,18,19,20,],[5,-8,25,-9,]),'LPAREN':([3,7,8,],[6,12,13,]),'NUM':([6,12,13,],[10,10,10,]),'COMMA':([9,10,11,15,16,18,29,],[14,-10,-11,21,22,24,32,]),'STRING':([14,21,22,24,25,32,],[18,18,18,18,29,18,]),'RPAREN':([17,18,26,27,28,29,33,],[23,-7,30,31,-4,-6,-5,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'switch':([0,],[1,]),'expr':([7,8,],[10,12,]),'cases':([13,14,19,24,],[15,17,22,25,]),}
+_lr_goto_items = {'switch':([0,],[1,]),'expr':([6,12,13,],[9,15,16,]),'cases':([14,21,22,24,32,],[17,26,27,28,33,]),'casevalue':([14,21,22,24,32,],[19,19,19,19,19,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,12 +27,15 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> switch","S'",1,None,None,None),
-  ('switch -> ID LARROW SWITCH LPAREN expr COMMA cases RPAREN','switch',8,'p_switch','R_switch_lex_yacc.py',45),
-  ('switch -> ID EQUAL SWITCH LPAREN expr COMMA cases RPAREN','switch',8,'p_switch','R_switch_lex_yacc.py',46),
-  ('cases -> STRING COMMA cases','cases',3,'p_cases','R_switch_lex_yacc.py',51),
-  ('cases -> STRING EQUAL STRING COMMA cases','cases',5,'p_cases','R_switch_lex_yacc.py',52),
-  ('cases -> STRING EQUAL STRING','cases',3,'p_cases','R_switch_lex_yacc.py',53),
-  ('cases -> STRING','cases',1,'p_cases','R_switch_lex_yacc.py',54),
-  ('expr -> NUM','expr',1,'p_expr','R_switch_lex_yacc.py',59),
-  ('expr -> ID','expr',1,'p_expr','R_switch_lex_yacc.py',60),
+  ('switch -> ID LARROW SWITCH LPAREN expr COMMA cases RPAREN','switch',8,'p_switch','R_switch_lex_yacc.py',46),
+  ('switch -> ID EQUAL SWITCH LPAREN expr COMMA cases RPAREN','switch',8,'p_switch','R_switch_lex_yacc.py',47),
+  ('switch -> SWITCH LPAREN expr COMMA cases RPAREN','switch',6,'p_switch','R_switch_lex_yacc.py',48),
+  ('cases -> STRING COMMA cases','cases',3,'p_cases','R_switch_lex_yacc.py',53),
+  ('cases -> casevalue EQUAL STRING COMMA cases','cases',5,'p_cases','R_switch_lex_yacc.py',54),
+  ('cases -> casevalue EQUAL STRING','cases',3,'p_cases','R_switch_lex_yacc.py',55),
+  ('cases -> STRING','cases',1,'p_cases','R_switch_lex_yacc.py',56),
+  ('casevalue -> STRING','casevalue',1,'p_casevalue','R_switch_lex_yacc.py',61),
+  ('casevalue -> ID','casevalue',1,'p_casevalue','R_switch_lex_yacc.py',62),
+  ('expr -> NUM','expr',1,'p_expr','R_switch_lex_yacc.py',67),
+  ('expr -> ID','expr',1,'p_expr','R_switch_lex_yacc.py',68),
 ]

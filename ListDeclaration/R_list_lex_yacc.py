@@ -1,12 +1,17 @@
 import ply.yacc as yacc
 import ply.lex as lex
 
-#Lex File:
+# R list declaration Syntax:
+# var <- list( value1, value2, ..., vec, ..., list, ... )  
+# Values in list can be of any type including list, vector, matrix, etc. 
+# Implemented only list containing numbers, strings, booleans, vectors and lists.
 
+# Lex file:
 tokens = ('ID', 'LARROW', 'LIST', 'NUM', 'STRING', 'C', 'LPAREN', 'RPAREN', 'COMMA', 'BOOLEAN_MISSING')
 
 err = 0
 
+# To define the token for c function
 def t_C(t):
     r'c'
     return t
@@ -15,6 +20,7 @@ def t_BOOLEAN_MISSING(t):
     r'TRUE | FALSE | NA'
     return t
 
+# To define the token for list function
 def t_LIST(t):
     r'list'
     return t
@@ -32,6 +38,7 @@ t_COMMA = r','
 
 t_ignore = ' \t\n'
 
+# To handle lexing errors when illegal characters are detected
 def t_error(t):
     print(f"Syntax Error: Illegal character found '{t.value[0]}'")
     global err
@@ -40,7 +47,7 @@ def t_error(t):
 
 lexer = lex.lex()
 
-#Yacc File:
+# Yacc File:
 
 def p_declaration(p):
     '''
@@ -63,6 +70,7 @@ def p_types(p):
             | LIST LPAREN values RPAREN
     '''
 
+# To handle syntax errors encountered while parsing
 def p_error(p):
     print("Syntax error")
     global err
@@ -87,5 +95,7 @@ while True:
 
     result = parser.parse(s)
 
+    # If there are no syntax errors, print valid syntax
     if err == 0:
         print("Valid syntax")
+

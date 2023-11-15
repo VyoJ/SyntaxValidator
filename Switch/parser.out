@@ -5,30 +5,34 @@ Grammar
 Rule 0     S' -> switch
 Rule 1     switch -> ID LARROW SWITCH LPAREN expr COMMA cases RPAREN
 Rule 2     switch -> ID EQUAL SWITCH LPAREN expr COMMA cases RPAREN
-Rule 3     cases -> STRING COMMA cases
-Rule 4     cases -> STRING EQUAL STRING COMMA cases
-Rule 5     cases -> STRING EQUAL STRING
-Rule 6     cases -> STRING
-Rule 7     expr -> NUM
-Rule 8     expr -> ID
+Rule 3     switch -> SWITCH LPAREN expr COMMA cases RPAREN
+Rule 4     cases -> STRING COMMA cases
+Rule 5     cases -> casevalue EQUAL STRING COMMA cases
+Rule 6     cases -> casevalue EQUAL STRING
+Rule 7     cases -> STRING
+Rule 8     casevalue -> STRING
+Rule 9     casevalue -> ID
+Rule 10    expr -> NUM
+Rule 11    expr -> ID
 
 Terminals, with rules where they appear
 
-COMMA                : 1 2 3 4
-EQUAL                : 2 4 5
-ID                   : 1 2 8
+COMMA                : 1 2 3 4 5
+EQUAL                : 2 5 6
+ID                   : 1 2 9 11
 LARROW               : 1
-LPAREN               : 1 2
-NUM                  : 7
-RPAREN               : 1 2
-STRING               : 3 4 4 5 5 6
-SWITCH               : 1 2
+LPAREN               : 1 2 3
+NUM                  : 10
+RPAREN               : 1 2 3
+STRING               : 4 5 6 7 8
+SWITCH               : 1 2 3
 error                : 
 
 Nonterminals, with rules where they appear
 
-cases                : 1 2 3 4
-expr                 : 1 2
+cases                : 1 2 3 4 5
+casevalue            : 5 6
+expr                 : 1 2 3
 switch               : 0
 
 Parsing method: LALR
@@ -38,8 +42,10 @@ state 0
     (0) S' -> . switch
     (1) switch -> . ID LARROW SWITCH LPAREN expr COMMA cases RPAREN
     (2) switch -> . ID EQUAL SWITCH LPAREN expr COMMA cases RPAREN
+    (3) switch -> . SWITCH LPAREN expr COMMA cases RPAREN
 
     ID              shift and go to state 2
+    SWITCH          shift and go to state 3
 
     switch                         shift and go to state 1
 
@@ -54,203 +60,288 @@ state 2
     (1) switch -> ID . LARROW SWITCH LPAREN expr COMMA cases RPAREN
     (2) switch -> ID . EQUAL SWITCH LPAREN expr COMMA cases RPAREN
 
-    LARROW          shift and go to state 3
-    EQUAL           shift and go to state 4
+    LARROW          shift and go to state 4
+    EQUAL           shift and go to state 5
 
 
 state 3
 
-    (1) switch -> ID LARROW . SWITCH LPAREN expr COMMA cases RPAREN
+    (3) switch -> SWITCH . LPAREN expr COMMA cases RPAREN
 
-    SWITCH          shift and go to state 5
+    LPAREN          shift and go to state 6
 
 
 state 4
 
-    (2) switch -> ID EQUAL . SWITCH LPAREN expr COMMA cases RPAREN
+    (1) switch -> ID LARROW . SWITCH LPAREN expr COMMA cases RPAREN
 
-    SWITCH          shift and go to state 6
+    SWITCH          shift and go to state 7
 
 
 state 5
 
-    (1) switch -> ID LARROW SWITCH . LPAREN expr COMMA cases RPAREN
+    (2) switch -> ID EQUAL . SWITCH LPAREN expr COMMA cases RPAREN
 
-    LPAREN          shift and go to state 7
+    SWITCH          shift and go to state 8
 
 
 state 6
 
-    (2) switch -> ID EQUAL SWITCH . LPAREN expr COMMA cases RPAREN
+    (3) switch -> SWITCH LPAREN . expr COMMA cases RPAREN
+    (10) expr -> . NUM
+    (11) expr -> . ID
 
-    LPAREN          shift and go to state 8
+    NUM             shift and go to state 10
+    ID              shift and go to state 11
 
+    expr                           shift and go to state 9
 
 state 7
 
-    (1) switch -> ID LARROW SWITCH LPAREN . expr COMMA cases RPAREN
-    (7) expr -> . NUM
-    (8) expr -> . ID
+    (1) switch -> ID LARROW SWITCH . LPAREN expr COMMA cases RPAREN
 
-    NUM             shift and go to state 11
-    ID              shift and go to state 9
+    LPAREN          shift and go to state 12
 
-    expr                           shift and go to state 10
 
 state 8
 
-    (2) switch -> ID EQUAL SWITCH LPAREN . expr COMMA cases RPAREN
-    (7) expr -> . NUM
-    (8) expr -> . ID
+    (2) switch -> ID EQUAL SWITCH . LPAREN expr COMMA cases RPAREN
 
-    NUM             shift and go to state 11
-    ID              shift and go to state 9
+    LPAREN          shift and go to state 13
 
-    expr                           shift and go to state 12
 
 state 9
 
-    (8) expr -> ID .
-
-    COMMA           reduce using rule 8 (expr -> ID .)
-
-
-state 10
-
-    (1) switch -> ID LARROW SWITCH LPAREN expr . COMMA cases RPAREN
-
-    COMMA           shift and go to state 13
-
-
-state 11
-
-    (7) expr -> NUM .
-
-    COMMA           reduce using rule 7 (expr -> NUM .)
-
-
-state 12
-
-    (2) switch -> ID EQUAL SWITCH LPAREN expr . COMMA cases RPAREN
+    (3) switch -> SWITCH LPAREN expr . COMMA cases RPAREN
 
     COMMA           shift and go to state 14
 
 
+state 10
+
+    (10) expr -> NUM .
+
+    COMMA           reduce using rule 10 (expr -> NUM .)
+
+
+state 11
+
+    (11) expr -> ID .
+
+    COMMA           reduce using rule 11 (expr -> ID .)
+
+
+state 12
+
+    (1) switch -> ID LARROW SWITCH LPAREN . expr COMMA cases RPAREN
+    (10) expr -> . NUM
+    (11) expr -> . ID
+
+    NUM             shift and go to state 10
+    ID              shift and go to state 11
+
+    expr                           shift and go to state 15
+
 state 13
 
-    (1) switch -> ID LARROW SWITCH LPAREN expr COMMA . cases RPAREN
-    (3) cases -> . STRING COMMA cases
-    (4) cases -> . STRING EQUAL STRING COMMA cases
-    (5) cases -> . STRING EQUAL STRING
-    (6) cases -> . STRING
+    (2) switch -> ID EQUAL SWITCH LPAREN . expr COMMA cases RPAREN
+    (10) expr -> . NUM
+    (11) expr -> . ID
 
-    STRING          shift and go to state 16
+    NUM             shift and go to state 10
+    ID              shift and go to state 11
 
-    cases                          shift and go to state 15
+    expr                           shift and go to state 16
 
 state 14
 
-    (2) switch -> ID EQUAL SWITCH LPAREN expr COMMA . cases RPAREN
-    (3) cases -> . STRING COMMA cases
-    (4) cases -> . STRING EQUAL STRING COMMA cases
-    (5) cases -> . STRING EQUAL STRING
-    (6) cases -> . STRING
+    (3) switch -> SWITCH LPAREN expr COMMA . cases RPAREN
+    (4) cases -> . STRING COMMA cases
+    (5) cases -> . casevalue EQUAL STRING COMMA cases
+    (6) cases -> . casevalue EQUAL STRING
+    (7) cases -> . STRING
+    (8) casevalue -> . STRING
+    (9) casevalue -> . ID
 
-    STRING          shift and go to state 16
+    STRING          shift and go to state 18
+    ID              shift and go to state 20
 
     cases                          shift and go to state 17
+    casevalue                      shift and go to state 19
 
 state 15
 
-    (1) switch -> ID LARROW SWITCH LPAREN expr COMMA cases . RPAREN
+    (1) switch -> ID LARROW SWITCH LPAREN expr . COMMA cases RPAREN
 
-    RPAREN          shift and go to state 18
+    COMMA           shift and go to state 21
 
 
 state 16
 
-    (3) cases -> STRING . COMMA cases
-    (4) cases -> STRING . EQUAL STRING COMMA cases
-    (5) cases -> STRING . EQUAL STRING
-    (6) cases -> STRING .
+    (2) switch -> ID EQUAL SWITCH LPAREN expr . COMMA cases RPAREN
 
-    COMMA           shift and go to state 19
-    EQUAL           shift and go to state 20
-    RPAREN          reduce using rule 6 (cases -> STRING .)
+    COMMA           shift and go to state 22
 
 
 state 17
 
-    (2) switch -> ID EQUAL SWITCH LPAREN expr COMMA cases . RPAREN
+    (3) switch -> SWITCH LPAREN expr COMMA cases . RPAREN
 
-    RPAREN          shift and go to state 21
+    RPAREN          shift and go to state 23
 
 
 state 18
+
+    (4) cases -> STRING . COMMA cases
+    (7) cases -> STRING .
+    (8) casevalue -> STRING .
+
+    COMMA           shift and go to state 24
+    RPAREN          reduce using rule 7 (cases -> STRING .)
+    EQUAL           reduce using rule 8 (casevalue -> STRING .)
+
+
+state 19
+
+    (5) cases -> casevalue . EQUAL STRING COMMA cases
+    (6) cases -> casevalue . EQUAL STRING
+
+    EQUAL           shift and go to state 25
+
+
+state 20
+
+    (9) casevalue -> ID .
+
+    EQUAL           reduce using rule 9 (casevalue -> ID .)
+
+
+state 21
+
+    (1) switch -> ID LARROW SWITCH LPAREN expr COMMA . cases RPAREN
+    (4) cases -> . STRING COMMA cases
+    (5) cases -> . casevalue EQUAL STRING COMMA cases
+    (6) cases -> . casevalue EQUAL STRING
+    (7) cases -> . STRING
+    (8) casevalue -> . STRING
+    (9) casevalue -> . ID
+
+    STRING          shift and go to state 18
+    ID              shift and go to state 20
+
+    cases                          shift and go to state 26
+    casevalue                      shift and go to state 19
+
+state 22
+
+    (2) switch -> ID EQUAL SWITCH LPAREN expr COMMA . cases RPAREN
+    (4) cases -> . STRING COMMA cases
+    (5) cases -> . casevalue EQUAL STRING COMMA cases
+    (6) cases -> . casevalue EQUAL STRING
+    (7) cases -> . STRING
+    (8) casevalue -> . STRING
+    (9) casevalue -> . ID
+
+    STRING          shift and go to state 18
+    ID              shift and go to state 20
+
+    cases                          shift and go to state 27
+    casevalue                      shift and go to state 19
+
+state 23
+
+    (3) switch -> SWITCH LPAREN expr COMMA cases RPAREN .
+
+    $end            reduce using rule 3 (switch -> SWITCH LPAREN expr COMMA cases RPAREN .)
+
+
+state 24
+
+    (4) cases -> STRING COMMA . cases
+    (4) cases -> . STRING COMMA cases
+    (5) cases -> . casevalue EQUAL STRING COMMA cases
+    (6) cases -> . casevalue EQUAL STRING
+    (7) cases -> . STRING
+    (8) casevalue -> . STRING
+    (9) casevalue -> . ID
+
+    STRING          shift and go to state 18
+    ID              shift and go to state 20
+
+    cases                          shift and go to state 28
+    casevalue                      shift and go to state 19
+
+state 25
+
+    (5) cases -> casevalue EQUAL . STRING COMMA cases
+    (6) cases -> casevalue EQUAL . STRING
+
+    STRING          shift and go to state 29
+
+
+state 26
+
+    (1) switch -> ID LARROW SWITCH LPAREN expr COMMA cases . RPAREN
+
+    RPAREN          shift and go to state 30
+
+
+state 27
+
+    (2) switch -> ID EQUAL SWITCH LPAREN expr COMMA cases . RPAREN
+
+    RPAREN          shift and go to state 31
+
+
+state 28
+
+    (4) cases -> STRING COMMA cases .
+
+    RPAREN          reduce using rule 4 (cases -> STRING COMMA cases .)
+
+
+state 29
+
+    (5) cases -> casevalue EQUAL STRING . COMMA cases
+    (6) cases -> casevalue EQUAL STRING .
+
+    COMMA           shift and go to state 32
+    RPAREN          reduce using rule 6 (cases -> casevalue EQUAL STRING .)
+
+
+state 30
 
     (1) switch -> ID LARROW SWITCH LPAREN expr COMMA cases RPAREN .
 
     $end            reduce using rule 1 (switch -> ID LARROW SWITCH LPAREN expr COMMA cases RPAREN .)
 
 
-state 19
-
-    (3) cases -> STRING COMMA . cases
-    (3) cases -> . STRING COMMA cases
-    (4) cases -> . STRING EQUAL STRING COMMA cases
-    (5) cases -> . STRING EQUAL STRING
-    (6) cases -> . STRING
-
-    STRING          shift and go to state 16
-
-    cases                          shift and go to state 22
-
-state 20
-
-    (4) cases -> STRING EQUAL . STRING COMMA cases
-    (5) cases -> STRING EQUAL . STRING
-
-    STRING          shift and go to state 23
-
-
-state 21
+state 31
 
     (2) switch -> ID EQUAL SWITCH LPAREN expr COMMA cases RPAREN .
 
     $end            reduce using rule 2 (switch -> ID EQUAL SWITCH LPAREN expr COMMA cases RPAREN .)
 
 
-state 22
+state 32
 
-    (3) cases -> STRING COMMA cases .
+    (5) cases -> casevalue EQUAL STRING COMMA . cases
+    (4) cases -> . STRING COMMA cases
+    (5) cases -> . casevalue EQUAL STRING COMMA cases
+    (6) cases -> . casevalue EQUAL STRING
+    (7) cases -> . STRING
+    (8) casevalue -> . STRING
+    (9) casevalue -> . ID
 
-    RPAREN          reduce using rule 3 (cases -> STRING COMMA cases .)
+    STRING          shift and go to state 18
+    ID              shift and go to state 20
 
+    casevalue                      shift and go to state 19
+    cases                          shift and go to state 33
 
-state 23
+state 33
 
-    (4) cases -> STRING EQUAL STRING . COMMA cases
-    (5) cases -> STRING EQUAL STRING .
+    (5) cases -> casevalue EQUAL STRING COMMA cases .
 
-    COMMA           shift and go to state 24
-    RPAREN          reduce using rule 5 (cases -> STRING EQUAL STRING .)
-
-
-state 24
-
-    (4) cases -> STRING EQUAL STRING COMMA . cases
-    (3) cases -> . STRING COMMA cases
-    (4) cases -> . STRING EQUAL STRING COMMA cases
-    (5) cases -> . STRING EQUAL STRING
-    (6) cases -> . STRING
-
-    STRING          shift and go to state 16
-
-    cases                          shift and go to state 25
-
-state 25
-
-    (4) cases -> STRING EQUAL STRING COMMA cases .
-
-    RPAREN          reduce using rule 4 (cases -> STRING EQUAL STRING COMMA cases .)
+    RPAREN          reduce using rule 5 (cases -> casevalue EQUAL STRING COMMA cases .)
 

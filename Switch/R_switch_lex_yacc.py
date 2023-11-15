@@ -1,11 +1,17 @@
 import ply.lex as lex
 import ply.yacc as yacc
 
-#Lex file:
+# R switch statement Syntax:
+# var <- switch (expression, case 1, case 2, ...)
+# var = switch (expression, case 1, case 2, ...)
+# switch (expression, case 1, case 2, ...)
+
+# Lex file:
 tokens = ('ID', 'LARROW', 'LPAREN', 'RPAREN', 'COMMA', 'STRING', 'NUM', 'EQUAL', 'SWITCH')
 
 err = 0
 
+# To detect switch keyword as a token
 def t_SWITCH(t):
     r'switch'
     return t
@@ -24,6 +30,7 @@ t_STRING = r'"[^"]*"'
 
 t_ignore = ' \t'
 
+# To handle lexing errors when illegal characters are detected
 def t_error(t):
     print(f"Syntax Error: Illegal character found '{t.value[0]}'")
     global err
@@ -32,20 +39,31 @@ def t_error(t):
 
 lexer = lex.lex()
 
+# Yacc File:
+
 def p_switch(p):
     '''
     switch  : ID LARROW SWITCH LPAREN expr COMMA cases RPAREN
             | ID EQUAL SWITCH LPAREN expr COMMA cases RPAREN
+            | SWITCH LPAREN expr COMMA cases RPAREN
     '''
 
 def p_cases(p):
     '''
     cases   : STRING COMMA cases
-            | STRING EQUAL STRING COMMA cases 
-            | STRING EQUAL STRING
+            | casevalue EQUAL STRING COMMA cases 
+            | casevalue EQUAL STRING
             | STRING
     '''
 
+# To derive either an identifier or string value
+def p_casevalue(p):
+    '''
+    casevalue   : STRING
+                | ID
+    '''
+
+# Expression can be numeric or an identifier value
 def p_expr(p):
     '''
     expr    : NUM   
@@ -53,6 +71,7 @@ def p_expr(p):
             
     '''
 
+# To handle syntax errors encountered while parsing
 def p_error(p):
     print("Syntax error")
     global err
@@ -77,5 +96,7 @@ while True:
 
     result = parser.parse(s)
 
+    # If there are no syntax errors, print valid syntax
     if err == 0:
         print("Valid syntax")
+

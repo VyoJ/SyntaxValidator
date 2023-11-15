@@ -1,18 +1,30 @@
 import ply.lex as lex
 import ply.yacc as yacc
 
+# R function declaration Syntax:
+# var <- c(value1, value2, value3, ...)
+# var <- seq(value1, value2, by = value)
+# var <- seq(value1, value2, length.out = value)
+# var <- num1:num2
+# Values in vector should be of same type but vectors consisting of number and strings can be implicity type converted and are correct syntax
+
+# Lex file:
+
 tokens = ('ID', 'LARROW', 'NUMBER', 'STRING', 'C', 'SEQ', 'LPAREN', 'RPAREN', 'COMMA', 'COLON', 'BY', 'EQUAL', 'LEN', 'BOOLEAN_MISSING')
 
 err = 0
 
+# To define the token for c function
 def t_C(t):
     r'c'
     return t
 
+# To define the token for seq function
 def t_SEQ(t):
     r'seq'
     return t
 
+# Arguments of the seq function
 def t_BY(t):
     r'by'
     return t
@@ -40,6 +52,7 @@ t_EQUAL = r'='
 
 t_ignore = ' \t\n'
 
+# To handle lexing errors when illegal characters are detected
 def t_error(t):
     print(f"Syntax Error: Illegal character found '{t.value[0]}'")
     global err
@@ -47,6 +60,8 @@ def t_error(t):
     t.lexer.skip(1)
 
 lexer = lex.lex()
+
+# Yacc File:
 
 def p_declaration(p):
     '''
@@ -68,6 +83,7 @@ def p_list(p):
             |   BOOLEAN_MISSING COMMA list
     '''
 
+# To handle syntax errors encountered while parsing
 def p_error(p):
     print("Syntax error")
     global err
@@ -92,5 +108,7 @@ while True:
 
     result = parser.parse(s)
 
+    # If there are no syntax errors, print valid syntax
     if err == 0:
         print("Valid syntax")
+
