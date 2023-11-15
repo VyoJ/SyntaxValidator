@@ -1,6 +1,6 @@
 import ply.lex as lex
 
-tokens = ('ID', 'LARROW', 'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'FUNC', 'COMMA')
+tokens = ('ID', 'LARROW', 'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'FUNC', 'COMMA', 'NUMBER', 'STRING')
 
 def t_FUNC(t):
     r'function'
@@ -16,6 +16,8 @@ t_RPAREN = r'\)'
 t_LBRACE = r'\{'
 t_RBRACE = r'\}'
 t_COMMA = r','
+t_NUMBER = r'\d+'
+t_STRING = r'"[^"]*"'
 
 t_ignore = ' \t'
 

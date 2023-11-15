@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'COMMA FUNC ID LARROW LBRACE LPAREN RBRACE RPAREN\n    declaration : ID LARROW FUNC LPAREN args RPAREN LBRACE statement RBRACE\n    \n    args    :   empty \n            |   ID\n            |   ID COMMA args\n    \n    statement   :   ID statement\n                |   ID\n    \n    empty   :\n    '
+_lr_signature = 'COMMA FUNC ID LARROW LBRACE LPAREN NUMBER RBRACE RPAREN STRING\n    declaration : ID LARROW FUNC LPAREN args RPAREN LBRACE statement RBRACE\n    \n    args    : empty \n            | argslist\n    \n    argslist    : ID\n                | ID COMMA argslist\n    \n    statement   : var_declare statement\n                | var_declare\n    \n    var_declare : ID LARROW STRING\n                | ID LARROW NUMBER\n    \n    empty   :\n    '
     
-_lr_action_items = {'ID':([0,5,9,12,13,],[2,6,6,13,13,]),'$end':([1,16,],[0,-1,]),'LARROW':([2,],[3,]),'FUNC':([3,],[4,]),'LPAREN':([4,],[5,]),'RPAREN':([5,6,7,8,9,11,],[-7,-3,10,-2,-7,-4,]),'COMMA':([6,],[9,]),'LBRACE':([10,],[12,]),'RBRACE':([13,14,15,],[-6,16,-5,]),}
+_lr_action_items = {'ID':([0,5,10,13,16,20,21,],[2,6,6,14,14,-8,-9,]),'$end':([1,18,],[0,-1,]),'LARROW':([2,14,],[3,17,]),'FUNC':([3,],[4,]),'LPAREN':([4,],[5,]),'RPAREN':([5,6,7,8,9,12,],[-10,-4,11,-2,-3,-5,]),'COMMA':([6,],[10,]),'LBRACE':([11,],[13,]),'RBRACE':([15,16,19,20,21,],[18,-7,-6,-8,-9,]),'STRING':([17,],[20,]),'NUMBER':([17,],[21,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'declaration':([0,],[1,]),'args':([5,9,],[7,11,]),'empty':([5,9,],[8,8,]),'statement':([12,13,],[14,15,]),}
+_lr_goto_items = {'declaration':([0,],[1,]),'args':([5,],[7,]),'empty':([5,],[8,]),'argslist':([5,10,],[9,12,]),'statement':([13,16,],[15,19,]),'var_declare':([13,16,],[16,16,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,11 +27,14 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> declaration","S'",1,None,None,None),
-  ('declaration -> ID LARROW FUNC LPAREN args RPAREN LBRACE statement RBRACE','declaration',9,'p_declaration','func_yacc.py',9),
-  ('args -> empty','args',1,'p_args','func_yacc.py',15),
-  ('args -> ID','args',1,'p_args','func_yacc.py',16),
-  ('args -> ID COMMA args','args',3,'p_args','func_yacc.py',17),
-  ('statement -> ID statement','statement',2,'p_statement','func_yacc.py',22),
-  ('statement -> ID','statement',1,'p_statement','func_yacc.py',23),
-  ('empty -> <empty>','empty',0,'p_empty','func_yacc.py',28),
+  ('declaration -> ID LARROW FUNC LPAREN args RPAREN LBRACE statement RBRACE','declaration',9,'p_declaration','func_lex_yacc.py',39),
+  ('args -> empty','args',1,'p_args','func_lex_yacc.py',44),
+  ('args -> argslist','args',1,'p_args','func_lex_yacc.py',45),
+  ('argslist -> ID','argslist',1,'p_argslist','func_lex_yacc.py',50),
+  ('argslist -> ID COMMA argslist','argslist',3,'p_argslist','func_lex_yacc.py',51),
+  ('statement -> var_declare statement','statement',2,'p_statement','func_lex_yacc.py',56),
+  ('statement -> var_declare','statement',1,'p_statement','func_lex_yacc.py',57),
+  ('var_declare -> ID LARROW STRING','var_declare',3,'p_var_declare','func_lex_yacc.py',62),
+  ('var_declare -> ID LARROW NUMBER','var_declare',3,'p_var_declare','func_lex_yacc.py',63),
+  ('empty -> <empty>','empty',0,'p_empty','func_lex_yacc.py',68),
 ]
